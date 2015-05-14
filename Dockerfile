@@ -48,3 +48,17 @@ ENV PATH $JAVA_HOME/bin:$PATH
 
 # configure symbolic links for the java and javac executables
 RUN update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 20000 && update-alternatives --install /usr/bin/javac javac $JAVA_HOME/bin/javac 20000
+
+# download tomcat 8
+RUN wget -y -- no-verbose -O /tmp/apache-tomcat-8.0.22.tar.gz http://ftp.wayne.edu/apache/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz
+
+# install tomcat 8
+RUN tar xzf /tmp/apache-tomcat-8.0.22.tar.gz -C /opt/
+
+ENV CATALINA_HOME /opt/apache-tomcat-8.0.22
+
+ADD tomcat-users.xml $CATALINA_HOME/conf/
+
+EXPOSE 8080
+
+CMD $CATALINA_HOME/bin/startup.sh
