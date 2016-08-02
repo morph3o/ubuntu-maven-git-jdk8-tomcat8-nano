@@ -17,12 +17,12 @@ RUN apt-get update
 RUN apt-get install -y wget
 
 # download maven
-ENV maven_filename apache-maven-3.3.3.tar.gz
-RUN wget --no-verbose -O /tmp/$maven_filename http://apache.mirrors.tds.net/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+ENV maven_filename apache-maven-3.3.9.tar.gz
+RUN wget --no-verbose -O /tmp/$maven_filename http://apache.mirrors.tds.net/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 
 # install maven
 RUN tar xzf /tmp/$maven_filename -C /opt/
-RUN ln -s /opt/apache-maven-3.3.3 /opt/maven
+RUN ln -s /opt/apache-maven-3.3.9 /opt/maven
 RUN ln -s /opt/maven/bin/mvn /usr/local/bin
 RUN rm -f /tmp/$maven_filename
 ENV MAVEN_HOME /opt/maven
@@ -50,15 +50,16 @@ ENV PATH $JAVA_HOME/bin:$PATH
 RUN update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 20000 && update-alternatives --install /usr/bin/javac javac $JAVA_HOME/bin/javac 20000
 
 # download tomcat 8
-RUN wget --no-verbose -O /tmp/apache-tomcat-8.0.22.tar.gz http://ftp.wayne.edu/apache/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz
+RUN wget --no-verbose -O /tmp/apache-tomcat-8.5.4.tar.gz http://ftp.wayne.edu/apache/tomcat/tomcat-8/v8.5.4/bin/apache-tomcat-8.5.4.tar.gz
 
 # install tomcat 8
-RUN tar xzf /tmp/apache-tomcat-8.0.22.tar.gz -C /opt/
+RUN tar xzf /tmp/apache-tomcat-8.5.4.tar.gz -C /opt/
 
-ENV CATALINA_HOME /opt/apache-tomcat-8.0.22
+ENV CATALINA_HOME /opt/apache-tomcat-8.5.4
+ENV PATH $CATALINA_HOME/bin:$PATH
 
 ADD tomcat-users.xml $CATALINA_HOME/conf/
 
 EXPOSE 8080
 
-CMD $CATALINA_HOME/bin/startup.sh
+CMD["catalina.sh","run"]
