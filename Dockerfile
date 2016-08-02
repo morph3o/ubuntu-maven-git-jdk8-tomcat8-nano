@@ -56,6 +56,7 @@ RUN wget --no-verbose -O /tmp/apache-tomcat-8.0.22.tar.gz http://ftp.wayne.edu/a
 RUN tar xzf /tmp/apache-tomcat-8.0.22.tar.gz -C /opt/
 
 ENV CATALINA_HOME /opt/apache-tomcat-8.0.22
+ENV PATH $CATALINA_HOME/bin:$PATH
 
 ADD tomcat-users.xml $CATALINA_HOME/conf/
 
